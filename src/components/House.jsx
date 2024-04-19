@@ -1,19 +1,27 @@
+import { useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
+import axios from 'axios'
+
 import Gallery from './Gallery'
 import Nav from './Nav'
 import Reviews from './Reviews'
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
-import { useParams } from 'react-router-dom'
+import Booking from './Booking'
+
+axios.defaults.withCredentials = true
 
 function House() {
-  const [house, setHouse] = useState({})
-  const { id } = useParams()
+  const [house, setHouse] = useState({
+    images: [],
+    host: {}
+  })
+
+  const params = useParams()
 
   useEffect(() => {
     const fetchHouse = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/houses/${id}`
+          `${process.env.REACT_APP_API_URL}/houses/${params.id}`
         )
         if (response.data) {
           setHouse(response.data)
@@ -73,7 +81,7 @@ function House() {
         {/* Booking */}
         <div className="border rounded-md p-4 mb-10">
           <h6 className="font-bold text-lg">
-            ${house.price}{' '}
+            ${house.price_night}{' '}
             <span className="text-gray-400 text-xs">/ night</span>
           </h6>
           <Booking house={house} />
