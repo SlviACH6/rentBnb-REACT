@@ -8,18 +8,20 @@ import {
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 
+axios.defaults.withCredentials = true
+
 function Filters({ setHouses }) {
-  const [locations, setLocations] = useState([])
+  const [location, setLocation] = useState([])
 
   // getting locations from db
   const getLocations = async () => {
     try {
       const response = await axios.get(
-        'https://haiku-bnb.onrender.com/locations'
+        `${process.env.REACT_APP_API_URL}/houses/location`
       )
 
       if (!response.error) {
-        setLocations(response.data)
+        setLocation(response.data)
       }
     } catch (err) {
       alert(
@@ -39,7 +41,7 @@ function Filters({ setHouses }) {
 
       // creating query request with form data
       const { data } = await axios.get(
-        `https://haiku-bnb.onrender.com/houses?max_price=${formObj.max_price}&min_rooms=${formObj.min_rooms}&search=${formObj.search}&location=${formObj.location}&sort=${formObj.sort}`
+        `${process.env.REACT_APP_API_URL}/houses?max_price=${formObj.max_price}&min_rooms=${formObj.min_rooms}&search=${formObj.search}&location=${formObj.location}&sort=${formObj.sort}`
       )
 
       if (data.error) {
@@ -66,11 +68,8 @@ function Filters({ setHouses }) {
           <FontAwesomeIcon icon={faHouse} className="" />
           <select type="select" class="w-full" name="location">
             <option value="">Any Location</option>
-            {locations.map((location, index) => (
-              <option key={index} value={location}>
-                {location}
-              </option>
-            ))}
+            {Array.isArray(location) &&
+              location.map((l, i) => <option key={i}>{l}</option>)}
           </select>
         </div>
 
