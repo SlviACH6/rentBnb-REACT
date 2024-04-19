@@ -13,7 +13,7 @@ function House() {
     const fetchHouse = async () => {
       try {
         const response = await axios.get(
-          `https://haiku-bnb.onrender.com/houses/${id}`
+          `${process.env.REACT_APP_API_URL}/houses/${id}`
         )
         if (response.data) {
           setHouse(response.data)
