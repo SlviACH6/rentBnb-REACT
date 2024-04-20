@@ -1,31 +1,40 @@
 import Nav from './Nav'
-import { Link } from 'react-router-dom'
+import { Link, useParams, useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
 
 function HouseEdit() {
-  const houseDescription =
-    "Nestled on a serene beachfront, this charming Airbb house offers a picturesque escape. The exterior boasts a classic beach house aesthetic with weathered wood siding and a spacious wraparound deck, perfect for savoring the ocean breeze.Inside, you're greeted by an open-concept living area bathed in natural light, complemented by cozy furnishings and nautical accents. The house features three comfortable bedrooms, each with a unique coastal theme, and two modern bathrooms. The fully equipped kitchen opens to a dining area that's ideal for intimate meals or entertaining guests.Large glass doors in the living room lead to the deck, where you can enjoy stunning sunset views over the ocean.This idyllic retreat is a stone's throw away from the soft sandy beach, making it the perfect spot for beach lovers and those seeking a tranquil getaway."
-  // Getting house data
-  const house = {
-    location: 'Phuket, Thailand',
-    bedrooms: 2,
-    bathrooms: 2,
-    description: houseDescription,
-    price: 120,
-    rating: 4,
-    images: [
-      'https://res.cloudinary.com/dsko6ntfj/image/upload/v1640295026/portal/web%20development%20beginners/05%20Project%20Airbnb/house%2001/house_01_01.png',
-      'https://res.cloudinary.com/dsko6ntfj/image/upload/v1640295026/portal/web%20development%20beginners/05%20Project%20Airbnb/house%2001/house_01_02.png',
-      'https://res.cloudinary.com/dsko6ntfj/image/upload/v1640295026/portal/web%20development%20beginners/05%20Project%20Airbnb/house%2001/house_01_03.png',
-      'https://res.cloudinary.com/dsko6ntfj/image/upload/v1640295026/portal/web%20development%20beginners/05%20Project%20Airbnb/house%2001/house_01_04.png',
-      'https://res.cloudinary.com/dsko6ntfj/image/upload/v1640295026/portal/web%20development%20beginners/05%20Project%20Airbnb/house%2001/house_01_05.png',
-      'https://res.cloudinary.com/dsko6ntfj/image/upload/v1640295026/portal/web%20development%20beginners/05%20Project%20Airbnb/house%2001/house_01_06.png',
-      'https://res.cloudinary.com/dsko6ntfj/image/upload/v1640295026/portal/web%20development%20beginners/05%20Project%20Airbnb/house%2001/house_01_07.png',
-      'https://res.cloudinary.com/dsko6ntfj/image/upload/v1640295026/portal/web%20development%20beginners/05%20Project%20Airbnb/house%2001/house_01_08.png',
-      'https://res.cloudinary.com/dsko6ntfj/image/upload/v1640295026/portal/web%20development%20beginners/05%20Project%20Airbnb/house%2001/house_01_09.png'
-    ]
+  // Data
+  const [house, setHouse] = useState({
+    images: [],
+    host: {}
+  })
+  const { id } = useParams()
+  const navigate = useNavigate()
+  // Functions
+  const getHouse = async () => {
+    const { data } = await axios.get(
+      `${process.env.REACT_APP_API_URL}/houses/${id}`
+    )
+    setHouse(data)
   }
-  const totalAmountOfInputs = 9
-  const remainderOfInputs = totalAmountOfInputs - house.images.length
+  const updateHouse = async (e) => {
+    e.preventDefault()
+    const form = new FormData(e.target)
+    let photos = form.getAll('photos')
+    let formObject = Object.fromEntries(form.entries())
+    formObject.photos = photos
+    const { data } = await axios.patch(
+      `${process.env.REACT_APP_API_URL}/houses/${id}`,
+      formObject
+    )
+    setHouse(data)
+    navigate(`/houses/${id}`)
+  }
+  // Effects
+  useEffect(() => {
+    getHouse()
+  }, [])
 
   return (
     <div className="container mx-auto">
