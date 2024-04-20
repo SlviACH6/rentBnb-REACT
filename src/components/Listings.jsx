@@ -3,6 +3,8 @@ import HouseCard from './HouseCard'
 import Nav from './Nav'
 import axios from 'axios'
 
+axios.defaults.withCredentials = true
+
 function Listings() {
   const [dblistings, setdbListings] = useState([])
   const [newListing, setNewListing] = useState({})
@@ -10,7 +12,7 @@ function Listings() {
   const getListings = async () => {
     try {
       const { data } = await axios.get(
-        'https://haiku-bnb.onrender.com/listings'
+        `${process.env.REACT_APP_API_URL}/listings`
       )
       setdbListings(data)
       console.log(dblistings)
@@ -27,7 +29,7 @@ function Listings() {
       formObject.photos = form.getAll('photos')
 
       const { data } = await axios.post(
-        'https://haiku-bnb.onrender.com/houses',
+        `${process.env.REACT_APP_API_URL}/houses`,
         formObject
       )
       if (data.house_id) {
@@ -171,8 +173,8 @@ function Listings() {
 
       {/* Flexbox to display existing house listings */}
       <div className="grid grid-cols-5 gap-3 mt-4">
-        {dblistings.map((house, index) => (
-          <HouseCard key={index} house={house} isListing={true} />
+        {dblistings.map((h, i) => (
+          <HouseCard house={h} key={i} isListing={true} />
         ))}
       </div>
     </div>
