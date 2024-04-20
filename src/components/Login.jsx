@@ -1,6 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+
+axios.defaults.withCredentials = true
 
 function Login() {
   // State
@@ -18,10 +20,13 @@ function Login() {
   const submitForm = async (e) => {
     e.preventDefault()
 
-    const response = await axios.post('https://haiku-bnb.onrender.com/login', {
-      email: e.target.email.value,
-      password: e.target.password.value
-    })
+    const response = await axios.post(
+      `${process.env.REACT_APP_API_URL}/login`,
+      {
+        email: e.target.email.value,
+        password: e.target.password.value
+      }
+    )
     if (response.data.error) {
       setError(response.data.error)
     } else {
