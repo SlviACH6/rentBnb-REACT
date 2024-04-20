@@ -7,11 +7,7 @@ function HouseCard({ house, booking, listing }) {
   return (
     <Link to={`/houses/${house.house_id}`}>
       <div className="block border rounded-md">
-        <img
-          src={house.house_photourl}
-          alt="House image"
-          className="rounded-t"
-        />
+        <img src={house.house_photo} alt="House image" className="rounded-t" />
         <div className="p-3">
           {/* merge starts here */}
           <h5 className="font-bold">{house.location}</h5>
