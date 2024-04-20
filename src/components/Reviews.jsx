@@ -2,8 +2,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCommentDots, faStar } from '@fortawesome/free-regular-svg-icons'
 import { faStar as solidFaStar } from '@fortawesome/free-solid-svg-icons'
 import { useEffect, useState } from 'react'
-import axios from 'axios'
 import { useParams } from 'react-router-dom'
+import axios from 'axios'
+
+axios.defaults.withCredentials = true
 
 function Reviews({ rating }) {
   const [reviews, setReviews] = useState([])
@@ -14,7 +16,7 @@ function Reviews({ rating }) {
   const getReviews = async () => {
     try {
       const { data } = await axios.get(
-        `https://haiku-bnb.onrender.com/reviews?house_id=${id}`
+        `${process.env.REACT_APP_API_URL}/reviews?house_id=${id}`
       )
       setReviews(data)
     } catch (error) {
@@ -34,7 +36,7 @@ function Reviews({ rating }) {
       formObj.house_id = id
       formObj.rating = formObj.form_rating
       const { data } = await axios.post(
-        `https://haiku-bnb.onrender.com/reviews`,
+        `${process.env.REACT_APP_API_URL}/reviews`,
         formObj
       )
 
@@ -131,7 +133,7 @@ function Review({ review }) {
         {/* guest profile photo */}
         <div className="">
           <img
-            src={review.author.picture}
+            src={review.profile_pictureurl}
             alt="Guest review photo"
             className="w-10 rounded-full"
           />
@@ -140,12 +142,12 @@ function Review({ review }) {
         <div>
           <p className="text-xs text-slate-400">{review.date}</p>
           <p className="text-sm font-semibold">
-            {review.author.firstName} {review.author.lastName}
+            {review.first_name} {review.last_name}
           </p>
         </div>
       </div>
       {/* review star rating & review */}
-      <p className="text-xs"> ⭐️{review.rating} Rating</p>
+      <p className="text-xs"> ⭐️{review.star_rating} Rating</p>
       <p className="text-sm">{review.content}</p>
     </div>
   )
