@@ -3,6 +3,8 @@ import Nav from './Nav'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 
+axios.defaults.withCredentials = true
+
 function Profile() {
   //state
   const [user, setUser] = useState({})
@@ -14,7 +16,9 @@ function Profile() {
   //once logged in GET the data of the profile
   const getData = async () => {
     try {
-      const response = await axios.get('https://haiku-bnb.onrender.com/profile')
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/profile`
+      )
       if (response.data.error) {
         navigate('/')
       } else {
@@ -32,7 +36,7 @@ function Profile() {
     const formObj = Object.fromEntries(form.entries())
     try {
       const { data } = await axios.patch(
-        'https://haiku-bnb.onrender.com/profile',
+        `${process.env.REACT_APP_API_URL}/profile`,
         formObj
       )
       //show a message to the user
@@ -47,7 +51,9 @@ function Profile() {
   const logOut = async (e) => {
     e.preventDefault()
     try {
-      const { data } = await axios.get('https://haiku-bnb.onrender.com/logout')
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_API_URL}/logout`
+      )
       console.log({ data })
       localStorage.removeItem('isLoggedIn')
       navigate('/')
