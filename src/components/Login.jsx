@@ -44,12 +44,14 @@ function Login() {
         className="flex flex-col mt-16  p-10 border-2 border-gray-300 rounded-lg"
       >
         {/*logo*/}
-        <img
-          src="https://res.cloudinary.com/dsko6ntfj/image/upload/v1642399114/portal/web%20development%20beginners/05%20Project%20Airbnb/assets/logo-airbnb.png
+        <Link to={'/'}>
+          <img
+            src="https://res.cloudinary.com/dsko6ntfj/image/upload/v1642399114/portal/web%20development%20beginners/05%20Project%20Airbnb/assets/logo-airbnb.png
 "
-          alt="airbnb logo"
-          className="h-6 w-20 mb-6"
-        />
+            alt="airbnb logo"
+            className="h-6 w-20 mb-6"
+          />
+        </Link>
         {/*email*/}
         <div className="">
           <label>Email</label>

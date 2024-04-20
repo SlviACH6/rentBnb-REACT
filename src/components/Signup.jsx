@@ -59,12 +59,12 @@ function Signup() {
   return (
     <div className=" rounded-md w-80 mx-auto mt-16 border-2 p-6">
       <form className="grid gap-2 w-full " onSubmit={(e) => submitForm(e)}>
-        <span className="flex justify-center">
+        <Link to={'/'} className="flex justify-center">
           <img
             src="https://res.cloudinary.com/dsko6ntfj/image/upload/v1642399114/portal/web%20development%20beginners/05%20Project%20Airbnb/assets/logo-airbnb.png"
             className="h-6"
           />
-        </span>
+        </Link>
         {/* First Name */}
         <label className="text-slate-500 text-sm">First Name</label>
         <input
