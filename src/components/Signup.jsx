@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 axios.defaults.withCredentials = true
 
@@ -22,7 +23,7 @@ function Signup() {
     let formObject = Object.fromEntries(form.entries())
     //POST request
     const response = await axios.post(
-      'https://haiku-bnb.onrender.com/signup',
+      `${process.env.REACT_APP_API_URL}/signup`,
       formObject
     )
     //sending back the response as an error otherwise navigate to home
@@ -56,7 +57,7 @@ function Signup() {
   }
 
   return (
-    <div className=" rounded-md w-80 mx-auto mt-16 border-2 p-4">
+    <div className=" rounded-md w-80 mx-auto mt-16 border-2 p-6">
       <form className="grid gap-2 w-full " onSubmit={(e) => submitForm(e)}>
         <span className="flex justify-center">
           <img
@@ -129,9 +130,15 @@ function Signup() {
           </span>
         )}
 
-        <div className="text-xs ">
+        <div className="text-s mt-2 mb-2 ">
           Already have an account?{` `}
-          <span className="underline text-xs text-red-500">Login here</span>
+          <Link
+            to={'/login'}
+            className="underline text-s text-red-400 hover:font-semibold hover:ease-in-out"
+            href="login.html"
+          >
+            Login here
+          </Link>
         </div>
       </form>
     </div>

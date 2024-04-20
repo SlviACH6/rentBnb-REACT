@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 axios.defaults.withCredentials = true
 
@@ -81,7 +82,14 @@ function Login() {
         {/*signup link*/}
         <div className=" mb-6">
           New to Airbnb?
-          <span className="text-red-400 font-bold"> Create an Account</span>
+          <Link
+            to={'/signup'}
+            href="signup.html"
+            className="text-red-400 underline hover:font-semibold hover:ease-in-out"
+          >
+            {' '}
+            Create an Account
+          </Link>
         </div>
       </form>
     </div>
