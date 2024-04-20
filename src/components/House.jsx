@@ -42,7 +42,7 @@ function House() {
     <div className="container mx-auto">
       <Nav />
       {/* Gallery */}
-      <Gallery images={house.images || []} />
+      <Gallery images={house.house_photourl || []} />
       <div className="grid grid-cols-3 gap-28 mt-4 justify-between">
         {/* Title and description of the listing */}
         <div className="col-span-2">
