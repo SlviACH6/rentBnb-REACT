@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom'
 function Nav() {
   const isLoggedIn = localStorage.getItem('isLoggedIn')
 
-  console.log(isLoggedIn)
-
   return (
     <nav className=" flex justify-between items-center p-4">
       {/*NAV left logo*/}
@@ -19,7 +17,22 @@ function Nav() {
       {/*NAV right*/}
       <div className="flex items-center ">
         {!isLoggedIn ? (
-          <Link to={'/login'}>LogIn</Link>
+          <>
+            <Link
+              className="border rounded px-2 py-2 hover:border-rose-500 mr-4"
+              href="login.html"
+              to={'/login'}
+            >
+              LogIn
+            </Link>
+            <Link
+              className="border rounded px-2 py-2 hover:border-rose-500 mr-2"
+              href="signup.html"
+              to={'/Signup'}
+            >
+              Signup
+            </Link>
+          </>
         ) : (
           <>
             <Link
