@@ -50,7 +50,8 @@ function Nav() {
             </Link>
 
             <Link
-              to="/profile"
+              to={'/profile'}
+              href="profile.html"
               className="flex gap-4 items-center p-1 border-2 border-gray-300 rounded-lg  hover:border-red-400 text-sm "
             >
               <img

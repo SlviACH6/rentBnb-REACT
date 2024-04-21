@@ -20,6 +20,7 @@ function Profile() {
         `${process.env.REACT_APP_API_URL}/profile`
       )
       if (response.data.error) {
+        console.log(response.data.error)
         navigate('/')
       } else {
         setUser(response.data)
