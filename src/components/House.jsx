@@ -21,7 +21,7 @@ function House() {
     const fetchHouse = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/houses/${params.id}`
+          `${process.env.REACT_APP_API_URL}/houses/${params.house_id}`
         )
         if (response.data) {
           setHouse(response.data)
@@ -42,14 +42,14 @@ function House() {
     <div className="container mx-auto">
       <Nav />
       {/* Gallery */}
-      <Gallery images={house.house_photourl || []} />
+      <Gallery images={house.house_photosurl || []} />
       <div className="grid grid-cols-3 gap-28 mt-4 justify-between">
         {/* Title and description of the listing */}
         <div className="col-span-2">
           <h1 className="text-3xl font-extrabold mb-4">{house.location}</h1>
           {/* bedrooms and bathrooms */}
           <h2 className=" text-gray-500 text-sm mb-8">
-            {house.rooms} bedrooms • {house.bathrooms} bathrooms
+            {house.bedrooms} bedrooms • {house.bathrooms} bathrooms
           </h2>
 
           {/* Read listing description */}
