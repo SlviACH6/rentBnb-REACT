@@ -12,7 +12,7 @@ axios.defaults.withCredentials = true
 function House() {
   const [house, setHouse] = useState({
     images: [],
-    host: {}
+    host: []
   })
 
   const params = useParams()
@@ -23,8 +23,8 @@ function House() {
         const response = await axios.get(
           `${process.env.REACT_APP_API_URL}/houses/${params.house_id}`
         )
-        if (response.data) {
-          setHouse(response.data)
+        if (response.data && response.data.length > 0) {
+          setHouse(response.data[0])
         } else {
           throw new Error('Failed to fetch house data')
         }
@@ -36,13 +36,13 @@ function House() {
     }
 
     fetchHouse()
-  }, [])
+  }, [params.house_id])
 
   return (
     <div className="container mx-auto">
       <Nav />
       {/* Gallery */}
-      <Gallery images={house.house_photosurl || []} />
+      <Gallery images={house.house_photo || []} />
       <div className="grid grid-cols-3 gap-28 mt-4 justify-between">
         {/* Title and description of the listing */}
         <div className="col-span-2">
@@ -58,7 +58,7 @@ function House() {
             <div className="flex mb-8 items-center">
               <div className="w-10">
                 <img
-                  src={house.host?.picture}
+                  src={house.host}
                   alt="host photo"
                   className="w-full rounded-full"
                 />
@@ -67,7 +67,7 @@ function House() {
               <div className="ml-5">
                 <div className="text-gray-400 text-sm">Hosted by</div>
                 <div className="">
-                  {house.host?.firstName} {house.host?.lastName}
+                  {house.first_name} {house.last_name}
                 </div>
               </div>
             </div>

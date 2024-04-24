@@ -1,13 +1,29 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
+import { useParams } from 'react-router-dom'
 
-function Gallery(props) {
-  const images = props.house_photosurl || []
-  const [selectedImage, setSelectedImage] = useState(
-    images.length > 0 ? images[0] : ''
-  )
-  const handleImageClick = (event) => {
-    setSelectedImage(event.target.src)
+function Gallery() {
+  const params = useParams()
+  const [images, setImages] = useState([])
+  const [selectedImage, setSelectedImage] = useState('')
+
+  useEffect(() => {
+    // Fetch data from your backend API
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/house_photos/${params.house_id}`)
+      .then((response) => {
+        setImages(response.data.house_photosurl || [])
+        setSelectedImage(response.data.house_photosurl[0] || '')
+      })
+      .catch((error) => {
+        console.error('Error fetching images:', error)
+      })
+  }, [params.house_id])
+
+  const handleImageClick = (imageUrl) => {
+    setSelectedImage(imageUrl)
   }
+
   return (
     <div className="grid grid-cols-2 gap-8">
       <div>
@@ -21,7 +37,7 @@ function Gallery(props) {
               src={image}
               alt={`Photo ${index + 1}`}
               className="rounded-lg"
-              onClick={handleImageClick}
+              onClick={() => handleImageClick(image)}
             />
           </div>
         ))}

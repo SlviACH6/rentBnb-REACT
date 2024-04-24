@@ -10,20 +10,20 @@ import Profile from './components/Profile'
 import Bookings from './components/Bookings'
 
 function Router() {
-    return (
-        <BrowserRouter>
-            <Routes>
-                <Route path='/' element={<Houses />} />
-                <Route path='/houses/:id' element={<House />} />
-                <Route path='/signup' element={<Signup />} />
-                <Route path='/houses/:id/edit' element={<HouseEdit />} />
-                <Route path='/listings' element={<Listings />} />
-                <Route path='/login' element={<Login />} />
-                <Route path='/profile' element={<Profile />} />
-                <Route path='/bookings' element={<Bookings />} />
-            </Routes>
-        </BrowserRouter>
-    )
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Houses />} />
+        <Route path="/houses/:house_id" element={<House />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/houses/:house_id/edit" element={<HouseEdit />} />
+        <Route path="/listings" element={<Listings />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/bookings" element={<Bookings />} />
+      </Routes>
+    </BrowserRouter>
+  )
 }
 
 export default Router

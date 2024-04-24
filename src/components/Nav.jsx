@@ -28,7 +28,7 @@ function Nav() {
             <Link
               className="border rounded px-2 py-2 hover:border-rose-500 mr-2"
               href="signup.html"
-              to={'/Signup'}
+              to={'/signup'}
             >
               Signup
             </Link>
