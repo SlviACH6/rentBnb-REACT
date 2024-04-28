@@ -11,10 +11,18 @@ axios.defaults.withCredentials = true
 
 function House() {
   const [house, setHouse] = useState({
-    images: [],
-    host: []
+    house_photos: [], // Ensure house_photos is initialized as an empty array
+    house_host: '',
+    location: '',
+    bedrooms: 0,
+    bathrooms: 0,
+    first_name: '',
+    last_name: '',
+    description: '',
+    price_night: 0,
+    rating: 0
   })
-
+  console.log(house.house_photos)
   const params = useParams()
 
   useEffect(() => {
@@ -25,24 +33,39 @@ function House() {
         )
         if (response.data && response.data.length > 0) {
           setHouse(response.data[0])
+          fetchPhotos(response.data[0].house_id)
         } else {
           throw new Error('Failed to fetch house data')
         }
       } catch (error) {
-        throw new Error(
-          'Error fetching houses: ' + (error.message ? error.message : error)
-        )
+        console.error('Error fetching houses: ', error)
       }
     }
 
     fetchHouse()
   }, [params.house_id])
 
+  const fetchPhotos = async (houseId) => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/photos/${houseId}`
+      )
+      if (response.data && response.data.length > 0) {
+        // Set the fetched photos to house.house_photos
+        setHouse((prevHouse) => ({ ...prevHouse, house_photos: response.data }))
+      } else {
+        console.log('No photos found for house:', houseId)
+      }
+    } catch (error) {
+      console.error('Error fetching photos:', error)
+    }
+  }
+
   return (
     <div className="container mx-auto">
       <Nav />
       {/* Gallery */}
-      <Gallery images={house.house_photo || []} />
+      <Gallery images={house.house_photos} />
       <div className="grid grid-cols-3 gap-28 mt-4 justify-between">
         {/* Title and description of the listing */}
         <div className="col-span-2">
