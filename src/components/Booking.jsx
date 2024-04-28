@@ -13,6 +13,10 @@ function Booking({ house }) {
   const { id } = useParams()
 
   useEffect(() => {
+    console.log('start date', startDate)
+    console.log('end date', endDate)
+    console.log('house price', house.price_night)
+
     if (startDate && endDate) {
       let startDateInNumbers = new Date(startDate).getTime()
       let endDateIntNumbers = new Date(endDate).getTime()
@@ -31,9 +35,18 @@ function Booking({ house }) {
 
       setNights(diferenceInDays)
 
-      setTotalPrice(diferenceInDays * house.price)
+      let calculatedPrice = diferenceInDays * house.price_night
+      if (!isNaN(calculatedPrice)) {
+        setTotalPrice(calculatedPrice)
+      } else {
+        setTotalPrice(0)
+      }
     }
-  }, [startDate, endDate])
+  }, [startDate, endDate, house.price_night])
+
+  console.log(totalPrice)
+  console.log(startDate)
+  console.log(endDate)
 
   const createBooking = async (e) => {
     //preventing reloading
@@ -98,7 +111,7 @@ function Booking({ house }) {
           <div className="flex justify-between items-center ">
             <div>
               {' '}
-              {nights} nights= <strong>$ {totalPrice}</strong>
+              {nights} nights = <strong>$ {totalPrice}</strong>
             </div>
             <button
               disabled={!totalPrice}
