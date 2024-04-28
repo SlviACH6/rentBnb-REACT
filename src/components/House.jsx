@@ -22,7 +22,6 @@ function House() {
     price_night: 0,
     rating: 0
   })
-  console.log(house.house_photos)
   const params = useParams()
 
   useEffect(() => {
@@ -45,21 +44,22 @@ function House() {
     fetchHouse()
   }, [params.house_id])
 
-  const fetchPhotos = async (houseId) => {
+  const fetchPhotos = async (house_id) => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/photos/${houseId}`
+        `${process.env.REACT_APP_API_URL}/photos/${house_id}`
       )
       if (response.data && response.data.length > 0) {
         // Set the fetched photos to house.house_photos
         setHouse((prevHouse) => ({ ...prevHouse, house_photos: response.data }))
       } else {
-        console.log('No photos found for house:', houseId)
+        console.log('No photos found for house:', house_id)
       }
     } catch (error) {
       console.error('Error fetching photos:', error)
     }
   }
+  console.log()
 
   return (
     <div className="container mx-auto">
