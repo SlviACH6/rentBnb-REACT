@@ -20,19 +20,23 @@ function Login() {
   }
   const submitForm = async (e) => {
     e.preventDefault()
-
-    const response = await axios.post(
-      `${process.env.REACT_APP_API_URL}/login`,
-      {
-        email: e.target.email.value,
-        password: e.target.password.value
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}/login`,
+        {
+          email: e.target.email.value,
+          password: e.target.password.value
+        }
+      )
+      if (response.data.error) {
+        setError(response.data.error)
+      } else {
+        localStorage.setItem('isLoggedIn', true)
+        navigate('/')
       }
-    )
-    if (response.data.error) {
-      setError(response.data.error)
-    } else {
-      localStorage.setItem('isLoggedIn', true)
-      navigate('/')
+    } catch (error) {
+      console.error('eror', error)
+      setError('An error ocurred. Please try again')
     }
   }
 
@@ -44,14 +48,16 @@ function Login() {
         className="flex flex-col mt-16  p-10 border-2 border-gray-300 rounded-lg"
       >
         {/*logo*/}
-        <Link to={'/'}>
-          <img
-            src="https://res.cloudinary.com/dsko6ntfj/image/upload/v1642399114/portal/web%20development%20beginners/05%20Project%20Airbnb/assets/logo-airbnb.png
+        <div className=" flex justify-center">
+          <Link to={'/'}>
+            <img
+              src="https://res.cloudinary.com/dsko6ntfj/image/upload/v1642399114/portal/web%20development%20beginners/05%20Project%20Airbnb/assets/logo-airbnb.png
 "
-            alt="airbnb logo"
-            className="h-6 w-20 mb-6"
-          />
-        </Link>
+              alt="airbnb logo"
+              className="h-6 w-20 mb-6"
+            />
+          </Link>
+        </div>
         {/*email*/}
         <div className="">
           <label>Email</label>
