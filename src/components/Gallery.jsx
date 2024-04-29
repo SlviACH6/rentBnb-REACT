@@ -17,10 +17,10 @@ function Gallery({ images }) {
   return (
     <div className="grid grid-cols-2 gap-8">
       <div>
-        <img src={selectedImage} alt="photo1" className="rounded-lg h-full" />
+        <img src={selectedImage} alt="photo1" className="rounded-lg h-96" />
       </div>
       {/* Gallery Grid */}
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-3 gap-3 mb-10">
         {Array.isArray(images) &&
           images.map((image, index) => (
             <div key={index}>
