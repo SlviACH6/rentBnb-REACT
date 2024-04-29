@@ -20,19 +20,23 @@ function Login() {
   }
   const submitForm = async (e) => {
     e.preventDefault()
-
-    const response = await axios.post(
-      `${process.env.REACT_APP_API_URL}/login`,
-      {
-        email: e.target.email.value,
-        password: e.target.password.value
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}/login`,
+        {
+          email: e.target.email.value,
+          password: e.target.password.value
+        }
+      )
+      if (response.data.error) {
+        setError(response.data.error)
+      } else {
+        localStorage.setItem('isLoggedIn', true)
+        navigate('/')
       }
-    )
-    if (response.data.error) {
-      setError(response.data.error)
-    } else {
-      localStorage.setItem('isLoggedIn', true)
-      navigate('/')
+    } catch (error) {
+      console.error('eror', error)
+      setError('An error ocurred. Please try again')
     }
   }
 
