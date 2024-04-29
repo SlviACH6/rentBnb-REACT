@@ -13,10 +13,6 @@ function Booking({ house }) {
   const { id } = useParams()
 
   useEffect(() => {
-    console.log('start date', startDate)
-    console.log('end date', endDate)
-    console.log('house price', house.price_night)
-
     if (startDate && endDate) {
       let startDateInNumbers = new Date(startDate).getTime()
       let endDateIntNumbers = new Date(endDate).getTime()
@@ -43,10 +39,6 @@ function Booking({ house }) {
       }
     }
   }, [startDate, endDate, house.price_night])
-
-  console.log(totalPrice)
-  console.log(startDate)
-  console.log(endDate)
 
   const createBooking = async (e) => {
     //preventing reloading

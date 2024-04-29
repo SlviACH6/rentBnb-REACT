@@ -7,16 +7,46 @@ import axios from 'axios'
 
 axios.defaults.withCredentials = true
 
-function Reviews({ rating }) {
+function Review({ review, users }) {
+  //const user = users.find((user) => user.user_id === review.user_id)
+  return (
+    <div className="p-2 rounded border-2 m-2">
+      <div className="flex gap-2">
+        {/* guest profile photo */}
+        <div className="">
+          <img
+            src="https://randomuser.me/api/portraits/men/24.jpg"
+            alt="Guest review photo"
+            className="w-10 rounded-full"
+          />
+        </div>
+        {/* review date & guest name */}
+        <div>
+          <p className="text-xs text-slate-700">{review.review_date}</p>
+          <p className="text-sm font-semibold">
+            Bob Jhonson
+            {/*{review.first_name} {review.last_name}*/}
+          </p>
+        </div>
+      </div>
+      {/* review star rating & review */}
+      <p className="text-xs mt-3"> ⭐️{review.rating} Rating</p>
+      <p className="text-sm mt-3">" {review.review} "</p>
+    </div>
+  )
+}
+
+function Reviews({ rating, users }) {
   const [reviews, setReviews] = useState([])
-  const { id } = useParams()
   const [reviewSent, setReviewSent] = useState(false)
+
+  const { house_id } = useParams()
 
   // get all reviews for the house Id
   const getReviews = async () => {
     try {
       const { data } = await axios.get(
-        `${process.env.REACT_APP_API_URL}/reviews?house_id=${id}`
+        `${process.env.REACT_APP_API_URL}/reviews/${house_id}`
       )
       setReviews(data)
     } catch (error) {
@@ -33,7 +63,7 @@ function Reviews({ rating }) {
     try {
       const form = new FormData(e.target)
       const formObj = Object.fromEntries(form.entries())
-      formObj.house_id = id
+      formObj.house_id = house_id
       formObj.rating = formObj.form_rating
       const { data } = await axios.post(
         `${process.env.REACT_APP_API_URL}/reviews`,
@@ -61,7 +91,10 @@ function Reviews({ rating }) {
       <div className="col-span-2">
         <div className="text-2xl font-bold">
           <div className="">
-            <FontAwesomeIcon icon={faCommentDots} className="text-[#94A3B8]" />
+            <FontAwesomeIcon
+              icon={faCommentDots}
+              className="text-[#94A3B8] mr-3"
+            />
             {reviews.length} Reviews
           </div>
         </div>
@@ -79,8 +112,8 @@ function Reviews({ rating }) {
             {rating}
           </div>
         </p>
-        {reviews?.map((review, index) => {
-          return <Review review={review} key={index} />
+        {reviews.map((review, index) => {
+          return <Review key={index} review={review} users={users} />
         })}
       </div>
       {/* Leaving a Review Option */}
@@ -122,33 +155,6 @@ function Reviews({ rating }) {
           </div>
         )}
       </div>
-    </div>
-  )
-}
-
-function Review({ review }) {
-  return (
-    <div className="p-2 rounded border-2 m-2">
-      <div className="flex gap-2">
-        {/* guest profile photo */}
-        <div className="">
-          <img
-            src={review.profile_pictureurl}
-            alt="Guest review photo"
-            className="w-10 rounded-full"
-          />
-        </div>
-        {/* review date & guest name */}
-        <div>
-          <p className="text-xs text-slate-400">{review.date}</p>
-          <p className="text-sm font-semibold">
-            {review.first_name} {review.last_name}
-          </p>
-        </div>
-      </div>
-      {/* review star rating & review */}
-      <p className="text-xs"> ⭐️{review.star_rating} Rating</p>
-      <p className="text-sm">{review.content}</p>
     </div>
   )
 }
