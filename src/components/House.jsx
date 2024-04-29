@@ -81,14 +81,16 @@ function House() {
             <div className="flex mb-8 items-center">
               <div className="w-10">
                 <img
-                  src={house.host}
+                  src="https://randomuser.me/api/portraits/women/85.jpg"
                   alt="host photo"
                   className="w-full rounded-full"
                 />
               </div>
               {/* host name*/}
               <div className="ml-5">
-                <div className="text-gray-400 text-sm">Hosted by</div>
+                <div className="text-gray-700 text-sm">
+                  Hosted by <strong>Linda</strong>
+                </div>
                 <div className="">
                   {house.first_name} {house.last_name}
                 </div>
