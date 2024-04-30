@@ -21,10 +21,10 @@ function Profile() {
       )
       if (response.data.error) {
         console.log(response.data.error)
-        navigate('/')
+        //navigate('/')
       } else {
         setUser(response.data)
-        setPicture(response.data.picture)
+        setPicture(response.data.profile_picture)
       }
     } catch (e) {
       alert(e.message)

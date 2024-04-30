@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
-import { Link } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 
 axios.defaults.withCredentials = true
 
@@ -18,25 +17,21 @@ function Login() {
       setEmailIsValid(false)
     }
   }
+
   const submitForm = async (e) => {
     e.preventDefault()
-    try {
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/login`,
-        {
-          email: e.target.email.value,
-          password: e.target.password.value
-        }
-      )
-      if (response.data.error) {
-        setError(response.data.error)
-      } else {
-        localStorage.setItem('isLoggedIn', true)
-        navigate('/')
-      }
-    } catch (error) {
-      console.error('eror', error)
-      setError('An error ocurred. Please try again')
+    const form = new FormData(e.target)
+    let formObject = Object.fromEntries(form.entries())
+    const { data } = await axios.post(
+      `${process.env.REACT_APP_API_URL}/login`,
+      formObject
+    )
+    if (data.error) {
+      setError(data.error)
+    } else {
+      localStorage.setItem('isLoggedIn', true)
+
+      navigate('/')
     }
   }
 
