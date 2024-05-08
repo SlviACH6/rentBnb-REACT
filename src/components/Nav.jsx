@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom'
 
-function Nav() {
+function Nav({ profilePicture }) {
   const isLoggedIn = localStorage.getItem('isLoggedIn')
+  console.log(isLoggedIn)
 
   return (
     <nav className=" flex justify-between items-center p-4">
@@ -55,7 +56,7 @@ function Nav() {
               className="flex gap-4 items-center p-1 border-2 border-gray-300 rounded-lg  hover:border-red-400 text-sm "
             >
               <img
-                src="https://randomuser.me/api/portrait/women/85.jpg"
+                src={profilePicture}
                 alt="host profile photo"
                 className=" w-7 h-7 rounded-full"
               />

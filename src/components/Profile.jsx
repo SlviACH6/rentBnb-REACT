@@ -2,50 +2,70 @@ import { useNavigate } from 'react-router-dom'
 import Nav from './Nav'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import Cookies from 'js-cookie'
 
 axios.defaults.withCredentials = true
 
 function Profile() {
   //state
   const [user, setUser] = useState({})
-  const [picture, setPicture] = useState(user.picture)
-  const [pictureInputValue, setPictureInputValue] = useState(user.picture)
+  const [picture, setPicture] = useState('')
+  const [pictureInputValue, setPictureInputValue] = useState('')
   const [changes, setChanges] = useState(false)
   const navigate = useNavigate()
 
   //once logged in GET the data of the profile
   const getData = async () => {
     try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/profile`
-      )
-      if (response.data.error) {
-        console.log(response.data.error)
-        //navigate('/')
-      } else {
-        setUser(response.data)
-        setPicture(response.data.profile_picture)
+      const token = Cookies.get('jwt')
+      if (!token) {
+        throw new Error('JWT token not found')
       }
-    } catch (e) {
-      alert(e.message)
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/profile`,
+        config
+      )
+      setUser(response.data)
+      setPicture(response.data.profile_picture)
+      console.log(response.data)
+    } catch (error) {
+      console.error('Error fetching profile data', error.message)
     }
   }
   //update the user PATCH the new info to the API
   const updateUser = async (e) => {
     e.preventDefault()
+
+    // Check if there are any changes in the form
     const form = new FormData(e.target)
     const formObj = Object.fromEntries(form.entries())
+    const hasChanges = Object.keys(formObj).some(
+      (key) => formObj[key] !== user[key]
+    )
+
+    if (!hasChanges) {
+      // No changes, so no need to send the request
+      return
+    }
+
     try {
       const { data } = await axios.patch(
         `${process.env.REACT_APP_API_URL}/profile`,
         formObj
       )
-      //show a message to the user
-      if (updateUser) {
+
+      // Handle response
+      if (data) {
         setChanges(true)
+        console.log('Profile updated successfully')
       }
-    } catch (e) {
-      alert(e.message)
+    } catch (error) {
+      console.error('Error updating profile:', error.message)
     }
   }
   // LOG OUT
@@ -59,7 +79,7 @@ function Profile() {
       localStorage.removeItem('isLoggedIn')
       navigate('/')
     } catch (e) {
-      alert(err.message)
+      console.error(e.message)
     }
   }
 
@@ -67,22 +87,30 @@ function Profile() {
     getData()
   }, [])
 
+  useEffect(() => {
+    if (user.profile_picture) {
+      setPicture(picture)
+      setPictureInputValue(picture)
+    }
+  }, [user])
+
   const handlePictureChange = (event) => {
     const newPicture = event.target.value
+    console.log(event.target.value)
     setPictureInputValue(newPicture)
     setPicture(newPicture)
   }
 
   return (
     <div className="container mx-auto">
-      <Nav />
+      <Nav profilePicture={user.profile_picture} />
       <div className="border-2 rounded p-4">
         <p className="text-xl mb-4 font-bold">Your Profile</p>
         <form onSubmit={updateUser}>
           <div className="flex gap-2 mb-4 items-center">
             <img
-              src={picture}
-              alt="Guest profile photo"
+              src={setPicture}
+              alt="User profile photo"
               className="w-20 rounded-full"
             />
             <input

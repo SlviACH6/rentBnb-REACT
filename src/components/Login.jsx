@@ -22,16 +22,22 @@ function Login() {
     e.preventDefault()
     const form = new FormData(e.target)
     let formObject = Object.fromEntries(form.entries())
-    const { data } = await axios.post(
-      `${process.env.REACT_APP_API_URL}/login`,
-      formObject
-    )
-    if (data.error) {
-      setError(data.error)
-    } else {
-      localStorage.setItem('isLoggedIn', true)
+    try {
+      const { data } = await axios.post(
+        `${process.env.REACT_APP_API_URL}/login`,
+        formObject
+      )
+      if (data.error) {
+        setError(data.error)
+        console.log(data.error)
+      } else {
+        localStorage.setItem('jwt', data.token)
+        localStorage.setItem('isLoggedIn', true)
 
-      navigate('/')
+        navigate('/')
+      }
+    } catch (error) {
+      console.error('Error loggin in: ', error.message)
     }
   }
 
@@ -75,13 +81,13 @@ function Login() {
           name="password"
           className="border-2 p-3 border-gray-300 rounded-lg mb-5 w-full"
           type="password"
-          placeholder="password here"
+          placeholder="your password here"
         />
         {/*button*/}
         <button className="p-3 w-full mb-5 bg-red-400 text-white text-center font-bold border rounded-lg">
           Login
         </button>
-        <span className="bg text-red-500"> {error} </span>
+        <span className="bg text-red-500 mb-3"> {error} </span>
         {/*signup link*/}
         <div className=" mb-6">
           New to Airbnb?
